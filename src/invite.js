@@ -33,10 +33,8 @@ const evItem = e => `<div class="evi"><h3>${e.name}</h3><p class="when">${e.date
 export function renderInvite() {
   injectFeather();
 
-  // first screen text (over the garden). To show the bride first, swap the two names below.
   const intro = document.getElementById('intro');
   
-  // Inject Ganesha into the sky so it fades out with the intro screen
   if (!document.getElementById('ganesha-sky')) {
     intro.insertAdjacentHTML('afterbegin', `<img id="ganesha-sky" src="/assets/ganesha.png" alt="Lord Ganesha" aria-hidden="true" />`);
   }
@@ -46,6 +44,7 @@ export function renderInvite() {
 
   const el = document.getElementById('invite');
   el.innerHTML = `
+    <div id="magic-layer" aria-hidden="true"></div>
     <section class="hero">
       <div class="hero-in">
         <p class="kicker">Radhe Radhe</p>
@@ -86,12 +85,25 @@ export function renderInvite() {
       ${sep}<p class="reveal">${c.families}</p><p class="kicker reveal">Radhe Radhe</p>
     </section>`;
 
+  const magicLayer = el.querySelector('#magic-layer');
+  const floaters = ['/assets/feather_small.png', '/assets/lotus.png'];
+  for (let i = 0; i < 16; i++) {
+    const img = document.createElement('img');
+    img.src = floaters[i % 2];
+    img.className = 'magic-item';
+    img.style.left = (Math.random() * 100) + 'vw';
+    img.style.width = (16 + Math.random() * 16) + 'px';
+    img.style.animationDuration = (16 + Math.random() * 14) + 's';
+    img.style.animationDelay = (Math.random() * -30) + 's';
+    img.style.setProperty('--sway', (Math.random() > 0.5 ? 1 : -1) * (15 + Math.random() * 25) + 'deg');
+    magicLayer.appendChild(img);
+  }
+
   const io = new IntersectionObserver(es => es.forEach(e => {
     if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
   }), { threshold: .15 });
   el.querySelectorAll('.reveal').forEach(n => io.observe(n));
 
-  // ---- details overlay: a peacock opens its tail, then the panel rises like a curtain
   const ov = document.createElement('div');
   ov.id = 'ov'; ov.hidden = true;
   ov.innerHTML = `<div class="ov-bg"></div><div class="fanwrap"></div>
@@ -103,7 +115,9 @@ export function renderInvite() {
 
   const fanwrap = ov.querySelector('.fanwrap'), panel = ov.querySelector('.panel'), xBtn = ov.querySelector('.x');
   const fan = [];
-  [[11, 160, 1, 'back'], [10, 136, .78, '']].forEach(([n, spread, k, cls]) => {
+  
+  // Layer count and spreads
+  [[15, 210, 1, 'back'], [13, 175, .84, '']].forEach(([n, spread, k, cls]) => {
     for (let i = 0; i < n; i++) {
       const f = document.createElement('div');
       f.className = 'fi ' + cls + (i % 2 ? ' m' : ''); f.innerHTML = `<i>${featherSvg('')}</i>`;
@@ -126,13 +140,19 @@ export function renderInvite() {
     panel.querySelector('.evs').innerHTML = x.events.map(evItem).join('');
     last = trigger;
     
-    const portrait = innerHeight > innerWidth, oy = portrait ? .65 : .66;
-    
+    const portrait = innerHeight > innerWidth;
     ov.classList.toggle('portrait', portrait);
-    ov.hidden = false; document.documentElement.classList.add('modal');
-    fanwrap.style.top = oy * 100 + '%';
+    ov.hidden = false; 
+    document.documentElement.classList.add('modal');
+
+    // Dynamically calculate fan origin directly from the panel's arch center
+    // This guarantees the crown always peaks over the arch no matter how tall Haldi or Sangeet is!
+    const rect = panel.getBoundingClientRect();
+    const archCenterY = rect.top + (rect.width * 0.35);
+    fanwrap.style.top = `${archCenterY}px`;
     
-    const L = Math.min(innerHeight * oy - 24, portrait ? innerWidth * 0.95 : innerWidth * 0.62, 620);
+    // Feather length scales to overshoot the panel
+    const L = Math.max(rect.width * 0.9, portrait ? innerWidth * 0.75 : 540);
     
     fan.forEach(f => {
       const h = L * f.k, w = h / 2;
@@ -145,13 +165,13 @@ export function renderInvite() {
     tl.fromTo('.ov-bg', { opacity: 0 }, { opacity: 1, duration: .5 }, 0)
       .fromTo(fan.map(f => f.el),
         { rotation: 0, scale: .55, opacity: 0, transformOrigin: '50% 100%' },
-        { rotation: k => fan[k].a, scale: 1, opacity: 1, duration: 1.4, ease: 'back.out(1.25)', stagger: { each: .045, from: 'center' } }, .15)
+        { rotation: k => fan[k].a, scale: 1, opacity: 1, duration: 1.4, ease: 'back.out(1.25)', stagger: { each: .035, from: 'center' } }, .15)
       .fromTo(panel,
         { clipPath: `inset(${H}px -60px -60px -60px)`, y: 30 },
         { clipPath: 'inset(-40px -60px -60px -60px)', y: 0, duration: 1.1, ease: 'power3.out' }, .75)
       .fromTo([xBtn, ...panel.querySelectorAll('.kicker, h2, .sep, .evi')],
         { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: .6, stagger: .1, ease: 'power2.out' }, 1.15);
-    stopSway();   // once the tail is open, every feather breathes gently, each on its rhythm
+    stopSway();  
     sway = gsap.to(fanwrap.querySelectorAll('svg'), { rotation: k => (k % 2 ? 1 : -1) * (1.2 + (k % 4) * .4), duration: k => 2.4 + (k % 5) * .35,
       ease: 'sine.inOut', repeat: -1, yoyo: true, delay: 1.5, transformOrigin: '50% 0%' });
     gsap.delayedCall(1.3, () => { if (!ov.hidden) xBtn.focus({ preventScroll: true }); });
@@ -167,7 +187,6 @@ export function renderInvite() {
   });
 }
 
-// returns start(): call it from the Open Invitation click (browsers only allow sound after a click)
 export function setupMusic(btn) {
   const a = new Audio(c.music); a.loop = true; a.volume = 0;
   let on = false, failed = false;

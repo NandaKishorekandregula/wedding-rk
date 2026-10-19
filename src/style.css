@@ -1,13 +1,24 @@
 :root { --ivory: #f6efdc; --gold: #d9a93f; --gold2: #f3d38a; --panel: rgba(6, 26, 40, .64); --line: rgba(243, 211, 138, .55); }
 * { margin: 0; box-sizing: border-box; }
-html { overflow-x: hidden; background: #06161f; }
+
+/* Strictly prevent sideways sliding on mobile */
+html, body {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  overflow-x: clip;
+  position: relative;
+  touch-action: pan-y;
+  background: #06161f;
+}
+
 html.locked, html.locked body, html.modal, html.modal body { overflow: hidden; }
 body { font-family: 'Cormorant Garamond', serif; color: var(--ivory); }
 #bg { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
 
 /* ---- first screen: blessing + names at ground level, in the open meadow (cream + gold, soft olive glow behind) ---- */
 #intro { position: fixed; z-index: 4; left: 0; right: 0; top: 68vh; top: 68dvh; padding: 0 1rem; text-align: center; opacity: 0; pointer-events: none; isolation: isolate; }
-@media (max-height: 600px) { #intro { top: 34vh; top: 34dvh; } }   /* short landscape phones: keep it clear of the button */
+@media (max-height: 600px) { #intro { top: 34vh; top: 34dvh; } }
 #intro::before {
   content: ''; position: absolute; z-index: -1; left: 50%; top: 50%; width: min(96vw, 900px); height: 220px; transform: translate(-50%, -50%);
   background: radial-gradient(closest-side, rgba(26, 38, 12, .45), rgba(26, 38, 12, .24) 55%, transparent);
@@ -21,6 +32,33 @@ body { font-family: 'Cormorant Garamond', serif; color: var(--ivory); }
   text-shadow: 0 2px 4px rgba(20, 30, 8, .6), 0 4px 26px rgba(20, 30, 8, .75);
 }
 #intro .names span { color: #f6d57a; }
+
+/* ---- Floating Magic Animation Layer (Contained to prevent horizontal spill) ---- */
+#magic-layer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  max-width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 3;
+  overflow: hidden;
+}
+.magic-item {
+  position: absolute;
+  bottom: -15vh;
+  opacity: 0;
+  mix-blend-mode: screen; 
+  animation: driftUp linear infinite;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.5));
+}
+@keyframes driftUp {
+  0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+  15% { opacity: 0.6; }
+  85% { opacity: 0.6; }
+  100% { transform: translateY(-130vh) rotate(var(--sway)); opacity: 0; }
+}
 
 /* Lord Ganesha in the garden sky */
 #ganesha-sky {
@@ -48,15 +86,15 @@ body { font-family: 'Cormorant Garamond', serif; color: var(--ivory); }
 #open:hover, #open:focus-visible { background: rgba(255, 200, 100, .28); box-shadow: 0 0 26px rgba(255, 200, 100, .55); outline: none; }
 
 /* invitation */
-#invite { display: none; position: relative; z-index: 2; }
+#invite { display: none; position: relative; z-index: 2; width: 100%; max-width: 100vw; overflow-x: clip; }
 body.open #invite { display: block; }
 .kicker { font: 400 clamp(.85rem, 2.4vw, 1.1rem) 'Cinzel Decorative', serif; letter-spacing: .4em; text-transform: uppercase; color: var(--gold2); }
 
-/* ---- second screen: plain text on the background, with only a soft see-through glow behind (no card, no border) ---- */
-.hero { min-height: 70vh; min-height: 70dvh; display: grid; place-items: center; padding: calc(env(safe-area-inset-top) + 8dvh) 1rem 2dvh; }
+/* ---- second screen ---- */
+.hero { min-height: 100vh; min-height: 100dvh; display: grid; place-items: center; padding: calc(env(safe-area-inset-top) + 4dvh) 1rem 6dvh; width: 100%; }
 .hero-in { position: relative; isolation: isolate; width: min(94vw, 760px); padding: clamp(2.6rem, 9vw, 5rem) 1rem; text-align: center; opacity: 0; }
 .hero-in::before {
-  content: ''; position: absolute; z-index: -1; inset: -14% -10%;
+  content: ''; position: absolute; z-index: -1; inset: -14% 0;
   background: radial-gradient(closest-side, rgba(4, 20, 30, .66), rgba(4, 20, 30, .34) 60%, transparent);
 }
 .hero-in > * { opacity: 0; }
@@ -73,7 +111,7 @@ h1 span { color: var(--gold2); }
 .sep i { flex: none; width: 9px; height: 9px; background: var(--gold); transform: rotate(45deg); }
 
 /* sections + cards */
-.blk { max-width: 980px; margin: 0 auto; padding: 6vh 1rem; padding: 6dvh 1rem; display: grid; gap: 1.6rem; justify-items: center; }
+.blk { width: 100%; max-width: 980px; margin: 0 auto; padding: 11vh 1rem; padding: 11dvh 1rem; display: grid; gap: 1.6rem; justify-items: center; }
 .grid { width: 100%; display: grid; gap: 1.6rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); }
 .card {
   width: 100%; text-align: center; border-radius: 22px; line-height: 1.55; font-size: clamp(1.1rem, 2.6vw, 1.3rem);
@@ -101,7 +139,6 @@ h3 { font: 700 clamp(1.1rem, 3.4vw, 1.35rem) 'Cinzel Decorative', serif; color: 
 }
 .fth:focus-visible { outline: none; }
 
-/* CHANGED: Added margin-top to push the feather back down below the flute since the ring is gone */
 .swing { display: block; transform-origin: 50% 0; animation: sway 5.6s ease-in-out infinite; margin-top: calc(var(--fh) * .5 + 18px); }
 .fth:nth-child(2) .swing { animation-duration: 6.6s; animation-delay: -2.7s; }
 @keyframes sway { 0%, 100% { transform: rotate(-2.4deg); } 50% { transform: rotate(2.4deg); } }
@@ -119,10 +156,10 @@ h3 { font: 700 clamp(1.1rem, 3.4vw, 1.35rem) 'Cinzel Decorative', serif; color: 
 @keyframes nudge { 50% { opacity: .55; transform: translateY(3px); } }
 
 /* ---- details overlay: peacock tail fan + rising panel ---- */
-#ov { position: fixed; inset: 0; z-index: 8; overflow: hidden; }
+#ov { position: fixed; inset: 0; z-index: 8; overflow: hidden; width: 100vw; max-width: 100%; }
 #ov[hidden] { display: none; }
 .ov-bg { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 60%, rgba(8, 48, 64, .9), rgba(2, 12, 20, .95)); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
-.fanwrap { position: absolute; left: 50%; top: 66%; width: 0; height: 0; }
+.fanwrap { position: absolute; left: 50%; top: 50%; width: 0; height: 0; }
 .fi { position: absolute; left: 0; bottom: 0; will-change: transform, opacity; }
 .fi i { display: block; width: 100%; height: 100%; transform: scaleY(-1); }
 .fi.m i { transform: scale(-1, -1); }
@@ -134,19 +171,22 @@ h3 { font: 700 clamp(1.1rem, 3.4vw, 1.35rem) 'Cinzel Decorative', serif; color: 
   color: var(--gold2); background: rgba(6, 26, 40, .7); border: 1px solid var(--line);
 }
 .x:hover, .x:focus-visible { background: rgba(255, 200, 100, .25); outline: none; }
-.pwrap { position: absolute; inset: 0; display: grid; place-items: center; padding: 1rem; }
-.portrait .panel { max-height: 56vh; padding-top: 2.6rem; }
+.pwrap { position: absolute; inset: 0; display: grid; place-items: center; padding: 1rem; width: 100%; max-width: 100vw; overflow: hidden; }
+
+/* Panel: Balanced padding and arch styling */
 .panel {
-  position: relative; width: min(92vw, 500px); max-height: 76vh; overflow: auto; text-align: center;
-  padding: 3.2rem clamp(1.2rem, 5vw, 2.4rem) 2rem; border-radius: 170px 170px 26px 26px;
-  background: rgba(6, 26, 40, .8); border: 2px solid var(--gold);
-  box-shadow: 0 0 0 6px rgba(243, 211, 138, .14), 0 30px 80px rgba(0, 0, 0, .6);
-  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  position: relative; width: min(88vw, 460px); max-height: 72vh; overflow-y: auto; text-align: center;
+  padding: 2.2rem clamp(1rem, 4vw, 2rem) 1.6rem; border-radius: 140px 140px 22px 22px;
+  background: rgba(6, 26, 40, .85); border: 2px solid var(--gold);
+  box-shadow: 0 0 0 5px rgba(243, 211, 138, .14), 0 30px 80px rgba(0, 0, 0, .6);
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
 }
-.panel .sep { margin: .9rem auto 0; }
-.evs { margin-top: .6rem; display: grid; }
-.evi { padding: 1rem .4rem; border-top: 1px solid var(--line); font-size: clamp(1.1rem, 2.6vw, 1.25rem); line-height: 1.5; }
+.portrait .panel { max-height: 60vh; padding-top: 1.8rem; }
+.panel .sep { margin: .6rem auto 0; }
+.evs { margin-top: .4rem; display: grid; }
+.evi { padding: .75rem .4rem; border-top: 1px solid var(--line); font-size: clamp(1rem, 2.4vw, 1.18rem); line-height: 1.4; }
 .evi:first-child { border-top: 0; }
+.evi h3 { margin-bottom: .2rem; }
 
 .btn {
   display: inline-block; cursor: pointer; text-decoration: none; border: 0; color: #14284b;
@@ -189,18 +229,18 @@ h3 { font: 700 clamp(1.1rem, 3.4vw, 1.35rem) 'Cinzel Decorative', serif; color: 
   }
   
   .panel {
-    width: 72vw; 
-    max-height: 55vh;
-    padding: 1.5rem 0.8rem 1.2rem;
-    border-radius: 100px 100px 20px 20px; 
+    width: 76vw; 
+    max-height: 54vh;
+    padding: 1.4rem 0.8rem 1rem;
+    border-radius: 110px 110px 18px 18px; 
   }
   
   .panel h2 {
-    font-size: 1.2rem;
+    font-size: 1.15rem;
   }
   .evi {
-    padding: 0.5rem 0.2rem;
-    font-size: 0.95rem;
+    padding: 0.45rem 0.2rem;
+    font-size: 0.92rem;
   }
   .kicker {
     font-size: 0.7rem;
