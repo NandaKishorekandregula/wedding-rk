@@ -126,11 +126,16 @@ export function renderInvite() {
     panel.querySelector('#pt').textContent = x.title || x.label;
     panel.querySelector('.evs').innerHTML = x.events.map(evItem).join('');
     last = trigger;
-    const portrait = innerHeight > innerWidth, oy = portrait ? .4 : .66;
+    
+    const portrait = innerHeight > innerWidth, oy = portrait ? .65 : .66;
+    
     ov.classList.toggle('portrait', portrait);
     ov.hidden = false; document.documentElement.classList.add('modal');
     fanwrap.style.top = oy * 100 + '%';
-    const L = Math.min(innerHeight * oy - 24, innerWidth * .62, 620);
+    
+    // CHANGED HERE: We allow the fan to grow to 95% of the screen width on phones so it extends past the panel
+    const L = Math.min(innerHeight * oy - 24, portrait ? innerWidth * 0.95 : innerWidth * 0.62, 620);
+    
     fan.forEach(f => {
       const h = L * f.k, w = h / 2;
       Object.assign(f.el.style, { height: h + 'px', width: w + 'px', marginLeft: -w / 2 + 'px' });

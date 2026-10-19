@@ -49,9 +49,12 @@ const pageFallback = () => {
 };
 
 async function init() {
+  const gardenFile = isMobile ? '/assets/garden_mobile.webp' : '/assets/garden.webp';
+  const depthFile = isMobile ? '/assets/garden_depth_mobile.png' : '/assets/garden_depth.png';
+
   const [texImg, texDepth, texPage] = await Promise.all([
-    loader.loadAsync('/assets/garden.webp').catch(() => { throw new Error('Cannot load /assets/garden.webp. Check the file is in public/assets/ with exactly this name.'); }),
-    loader.loadAsync('/assets/garden_depth.png').catch(() => { show('Note: public/assets/garden_depth.png not found, so the garden is flat.'); return flat(); }),
+    loader.loadAsync(gardenFile).catch(() => { throw new Error('Cannot load ' + gardenFile + '. Check the file is in public/assets/.'); }),
+    loader.loadAsync(depthFile).catch(() => { show('Note: ' + depthFile + ' not found, so the garden is flat.'); return flat(); }),
     loader.loadAsync('/assets/page_bg.webp').catch(() => { show('Note: public/assets/page_bg.webp not found, using a plain teal background.'); return pageFallback(); }),
   ]);
   texDepth.generateMipmaps = false; texDepth.minFilter = THREE.LinearFilter;
