@@ -1,0 +1,201 @@
+:root { --ivory: #f6efdc; --gold: #d9a93f; --gold2: #f3d38a; --panel: rgba(6, 26, 40, .64); --line: rgba(243, 211, 138, .55); }
+* { margin: 0; box-sizing: border-box; }
+html { overflow-x: hidden; background: #06161f; }
+html.locked, html.locked body, html.modal, html.modal body { overflow: hidden; }
+body { font-family: 'Cormorant Garamond', serif; color: var(--ivory); }
+#bg { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+
+/* ---- first screen: blessing + names at ground level, in the open meadow (cream + gold, soft olive glow behind) ---- */
+#intro { position: fixed; z-index: 4; left: 0; right: 0; top: 68vh; top: 68dvh; padding: 0 1rem; text-align: center; opacity: 0; pointer-events: none; isolation: isolate; }
+@media (max-height: 600px) { #intro { top: 34vh; top: 34dvh; } }   /* short landscape phones: keep it clear of the button */
+#intro::before {
+  content: ''; position: absolute; z-index: -1; left: 50%; top: 50%; width: min(96vw, 900px); height: 220px; transform: translate(-50%, -50%);
+  background: radial-gradient(closest-side, rgba(26, 38, 12, .45), rgba(26, 38, 12, .24) 55%, transparent);
+}
+#intro .bless {
+  font: italic 600 clamp(1.05rem, 2.7vw, 1.6rem) 'Cormorant Garamond', serif; letter-spacing: .05em; color: #fff0c9;
+  text-shadow: 0 1px 3px rgba(20, 30, 8, .7), 0 3px 20px rgba(20, 30, 8, .7);
+}
+#intro .names {
+  margin-top: .45rem; font: 700 clamp(1.7rem, 4.6vw, 3rem) / 1.12 'Cinzel Decorative', serif; letter-spacing: .02em; color: #fff6dc;
+  text-shadow: 0 2px 4px rgba(20, 30, 8, .6), 0 4px 26px rgba(20, 30, 8, .75);
+}
+#intro .names span { color: #f6d57a; }
+
+/* Lord Ganesha in the garden sky */
+/* Lord Ganesha in the garden sky */
+#ganesha-sky {
+  position: absolute;
+  /* Making this more negative pushes the image HIGHER */
+  top: -55vh; 
+  /* Lowering this percentage pushes the image further LEFT */
+  left: 50%; 
+  transform: translateX(-50%);
+  width: clamp(140px, 24vw, 240px);
+  opacity: 0.95; 
+  pointer-events: none;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.25)); 
+}
+/* Open Invitation button */
+#open {
+  position: fixed; z-index: 5; left: 0; right: 0; margin-inline: auto; width: max-content;
+  bottom: calc(env(safe-area-inset-bottom) + 7vh); bottom: calc(env(safe-area-inset-bottom) + 7dvh);
+  cursor: pointer; color: #fff; opacity: 0; pointer-events: none;
+  font: 600 clamp(1rem, 2.6vw, 1.25rem) 'Cormorant Garamond', serif;
+  letter-spacing: .2em; text-transform: uppercase; padding: .9em 2em; border-radius: 999px;
+  background: rgba(20, 14, 6, .35); border: 1px solid rgba(255, 220, 150, .75);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); text-shadow: 0 2px 12px rgba(0, 0, 0, .6);
+  transition: background .3s, box-shadow .3s;
+}
+#open:hover, #open:focus-visible { background: rgba(255, 200, 100, .28); box-shadow: 0 0 26px rgba(255, 200, 100, .55); outline: none; }
+
+/* invitation */
+#invite { display: none; position: relative; z-index: 2; }
+body.open #invite { display: block; }
+.kicker { font: 400 clamp(.85rem, 2.4vw, 1.1rem) 'Cinzel Decorative', serif; letter-spacing: .4em; text-transform: uppercase; color: var(--gold2); }
+
+/* ---- second screen: plain text on the background, with only a soft see-through glow behind (no card, no border) ---- */
+.hero { min-height: 100vh; min-height: 100dvh; display: grid; place-items: center; padding: calc(env(safe-area-inset-top) + 4dvh) 1rem 6dvh; }
+.hero-in { position: relative; isolation: isolate; width: min(94vw, 760px); padding: clamp(2.6rem, 9vw, 5rem) 1rem; text-align: center; opacity: 0; }
+.hero-in::before {
+  content: ''; position: absolute; z-index: -1; inset: -14% -10%;
+  background: radial-gradient(closest-side, rgba(4, 20, 30, .66), rgba(4, 20, 30, .34) 60%, transparent);
+}
+.hero-in > * { opacity: 0; }
+.hero-in .sep { margin: 1.2rem auto; }
+.line { margin-top: .6rem; font-style: italic; font-size: clamp(1.1rem, 2.8vw, 1.4rem); color: var(--ivory); text-shadow: 0 2px 14px rgba(0, 0, 0, .6); }
+h1 { font: 700 clamp(2.1rem, 8vw, 4rem) / 1.12 'Cinzel Decorative', serif; color: var(--ivory); text-shadow: 0 2px 4px rgba(0, 0, 0, .4), 0 4px 24px rgba(0, 0, 0, .55); }
+h1 span { color: var(--gold2); }
+.date { margin-top: .9rem; font-weight: 600; font-size: clamp(1.15rem, 3vw, 1.6rem); letter-spacing: .12em; color: var(--gold2); text-shadow: 0 2px 14px rgba(0, 0, 0, .6); }
+
+/* gold divider with a diamond */
+.sep { display: flex; align-items: center; gap: .8rem; width: min(100%, 320px); }
+.sep::before, .sep::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--gold)); }
+.sep::after { transform: scaleX(-1); }
+.sep i { flex: none; width: 9px; height: 9px; background: var(--gold); transform: rotate(45deg); }
+
+/* sections + cards */
+.blk { max-width: 980px; margin: 0 auto; padding: 11vh 1rem; padding: 11dvh 1rem; display: grid; gap: 1.6rem; justify-items: center; }
+.grid { width: 100%; display: grid; gap: 1.6rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); }
+.card {
+  width: 100%; text-align: center; border-radius: 22px; line-height: 1.55; font-size: clamp(1.1rem, 2.6vw, 1.3rem);
+  padding: clamp(1.4rem, 4vw, 2.2rem) clamp(1.2rem, 4vw, 2rem);
+  background: var(--panel); border: 1px solid var(--line); box-shadow: 0 14px 40px rgba(0, 0, 0, .45);
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+}
+.card.wide { max-width: 720px; display: grid; gap: .9rem; justify-items: center; }
+h2 { font: 700 clamp(1.3rem, 4.4vw, 1.9rem) 'Cinzel Decorative', serif; color: var(--gold2); text-align: center; text-shadow: 0 2px 14px rgba(0, 0, 0, .6); }
+h3 { font: 700 clamp(1.1rem, 3.4vw, 1.35rem) 'Cinzel Decorative', serif; color: var(--gold2); margin-bottom: .4rem; }
+.when { color: var(--gold2); font-weight: 600; letter-spacing: .06em; }
+.sub { opacity: .8; font-size: .95em; margin-top: .4rem; }
+.shloka { font-size: clamp(1.25rem, 3.4vw, 1.7rem); font-style: italic; color: var(--gold2); }
+
+/* ---- two peacock feathers hanging from Krishna's flute ---- */
+.feathers { --fh: calc(min(100vw - 2rem, 560px) / 14); position: relative; width: min(100%, 560px); display: flex; padding-top: calc(var(--fh) * .25); }
+
+/* Full-bleed background block for the Celebrations section */
+.feathers::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  
+  /* Forces the background to span the entire screen width */
+  width: 100vw;
+  left: 50%;
+  transform: translateX(-50%);
+  
+  /* Expands upwards to cover the 'Celebrations' heading and downwards for padding */
+  top: -180px; 
+  bottom: -120px; 
+  
+  /* Solid background image with no fading */
+  background: url('/assets/clean_bg.jpg') center/cover no-repeat;
+}
+
+.flute { position: absolute; left: 0; top: 0; width: 100%; height: var(--fh); overflow: visible; z-index: 0; pointer-events: none; filter: drop-shadow(0 8px 10px rgba(0, 0, 0, .5)); }
+.shine { animation: shine 7s ease-in-out infinite; }
+@keyframes shine { 0% { transform: translateX(0); } 55%, 100% { transform: translateX(720px); } }
+
+.fth {
+  position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column; align-items: center; padding: 0 .4rem;
+  background: none; border: 0; cursor: pointer; color: inherit; font: inherit; -webkit-tap-highlight-color: transparent;
+}
+.fth:focus-visible { outline: none; }
+/* golden thread tied around the flute */
+.ring { position: relative; width: 2px; height: calc(var(--fh) * .5 + 26px); background: linear-gradient(var(--gold2), var(--gold)); }
+.ring::before {
+  content: ''; position: absolute; left: 50%; top: 0; width: 10px; height: calc(var(--fh) * .5); margin-left: -5px; border-radius: 2px;
+  background: repeating-linear-gradient(0deg, #8a6420 0 1.2px, #f3d38a 1.2px 3.2px); box-shadow: 0 2px 4px rgba(0, 0, 0, .5);
+}
+.swing { display: block; transform-origin: 50% 0; animation: sway 5.6s ease-in-out infinite; }
+.fth:nth-child(2) .swing { animation-duration: 6.6s; animation-delay: -2.7s; }
+@keyframes sway { 0%, 100% { transform: rotate(-2.4deg); } 50% { transform: rotate(2.4deg); } }
+.pfs { display: block; width: clamp(120px, 30vw, 210px); aspect-ratio: 1 / 2; overflow: visible; filter: drop-shadow(0 14px 16px rgba(0, 0, 0, .5)); transition: filter .3s; }
+.fth:nth-child(2) .pfs { transform: scaleX(-1); }
+.fth:hover .pfs, .fth:focus-visible .pfs { filter: drop-shadow(0 0 18px rgba(243, 211, 138, .75)) drop-shadow(0 14px 16px rgba(0, 0, 0, .5)); }
+.gl { animation: glint 3.4s ease-in-out infinite; }
+.vane { transform-box: view-box; transform-origin: 140px 0; animation: flutter 5s ease-in-out infinite; }
+@keyframes flutter { 0%, 100% { transform: skewX(-.8deg); } 50% { transform: skewX(.8deg); } }
+@keyframes glint { 50% { opacity: .15; } }
+.cap { margin-top: .9rem; display: grid; gap: .4rem; justify-items: center; text-align: center; }
+.cap b { font: 700 clamp(1rem, 3.2vw, 1.25rem) 'Cinzel Decorative', serif; letter-spacing: .1em; text-transform: uppercase; color: var(--gold2); text-shadow: 0 2px 12px rgba(0, 0, 0, .6); }
+.cap small { display: inline-flex; align-items: center; gap: .45rem; font: 600 .85rem 'Cormorant Garamond', serif; letter-spacing: .22em; text-transform: uppercase; color: rgba(246, 239, 220, .85); animation: nudge 2.2s ease-in-out infinite; }
+.cap svg { width: 20px; height: 20px; }
+@keyframes nudge { 50% { opacity: .55; transform: translateY(3px); } }
+
+/* ---- details overlay: peacock tail fan + rising panel ---- */
+#ov { position: fixed; inset: 0; z-index: 8; overflow: hidden; }
+#ov[hidden] { display: none; }
+.ov-bg { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 60%, rgba(8, 48, 64, .9), rgba(2, 12, 20, .95)); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+.fanwrap { position: absolute; left: 50%; top: 66%; width: 0; height: 0; }
+.fi { position: absolute; left: 0; bottom: 0; will-change: transform, opacity; }
+.fi i { display: block; width: 100%; height: 100%; transform: scaleY(-1); }
+.fi.m i { transform: scale(-1, -1); }
+.fi svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.fi.back i { opacity: .82; }
+.x {
+  position: absolute; z-index: 2; top: calc(env(safe-area-inset-top) + 14px); right: calc(env(safe-area-inset-right) + 14px);
+  width: 46px; height: 46px; display: grid; place-items: center; cursor: pointer; border-radius: 50%; font-size: 1.1rem;
+  color: var(--gold2); background: rgba(6, 26, 40, .7); border: 1px solid var(--line);
+}
+.x:hover, .x:focus-visible { background: rgba(255, 200, 100, .25); outline: none; }
+.pwrap { position: absolute; inset: 0; display: grid; place-items: center; padding: 1rem; }
+.portrait .pwrap { place-items: end center; padding-bottom: max(4vh, env(safe-area-inset-bottom)); }
+.panel {
+  position: relative; width: min(92vw, 500px); max-height: 76vh; overflow: auto; text-align: center;
+  padding: 3.2rem clamp(1.2rem, 5vw, 2.4rem) 2rem; border-radius: 170px 170px 26px 26px;
+  background: rgba(6, 26, 40, .8); border: 2px solid var(--gold);
+  box-shadow: 0 0 0 6px rgba(243, 211, 138, .14), 0 30px 80px rgba(0, 0, 0, .6);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+}
+.portrait .panel { max-height: 56vh; padding-top: 2.6rem; }
+.panel .sep { margin: .9rem auto 0; }
+.evs { margin-top: .6rem; display: grid; }
+.evi { padding: 1rem .4rem; border-top: 1px solid var(--line); font-size: clamp(1.1rem, 2.6vw, 1.25rem); line-height: 1.5; }
+.evi:first-child { border-top: 0; }
+
+.btn {
+  display: inline-block; cursor: pointer; text-decoration: none; border: 0; color: #14284b;
+  font: 700 clamp(.95rem, 2.4vw, 1.1rem) 'Cormorant Garamond', serif; letter-spacing: .18em; text-transform: uppercase;
+  padding: .9em 2em; border-radius: 999px; background: linear-gradient(135deg, var(--gold2), var(--gold));
+  box-shadow: 0 6px 20px rgba(0, 0, 0, .4); transition: transform .2s, box-shadow .2s;
+}
+.btn:hover, .btn:focus-visible { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(217, 169, 63, .5); outline: none; }
+.foot { min-height: 60vh; min-height: 60dvh; align-content: center; text-align: center; font-size: clamp(1.2rem, 3vw, 1.6rem); text-shadow: 0 2px 14px rgba(0, 0, 0, .8); }
+
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity .9s, transform .9s; }
+.reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } .swing, .cap small, .shine, .gl, .vane { animation: none; } }
+
+/* music button */
+#music {
+  position: fixed; z-index: 5; right: calc(env(safe-area-inset-right) + 1rem); bottom: calc(env(safe-area-inset-bottom) + 1rem);
+  width: 46px; height: 46px; display: grid; place-items: center; cursor: pointer; border-radius: 50%;
+  font-size: 1.4rem; color: #fff; background: rgba(6, 26, 40, .7); border: 1px solid var(--line);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+}
+#music[hidden] { display: none; }
+#music.off { opacity: .7; }
+#music.off::after { content: ''; position: absolute; left: 50%; top: 50%; width: 26px; height: 2px; margin: -1px 0 0 -13px; background: #fff; transform: rotate(-45deg); }
+
+#err { position: fixed; z-index: 9; left: 0; top: 0; max-width: 100%; padding: 12px; color: #ff9090; background: rgba(0, 0, 0, .88); font: 12px/1.4 monospace; white-space: pre-wrap; }

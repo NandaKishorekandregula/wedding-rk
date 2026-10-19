@@ -1,0 +1,44 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Depth map tool</title>
+<style>
+  body { font: 16px system-ui; background: #111; color: #eee; padding: 24px; }
+  canvas { max-width: 100%; margin-top: 16px; border: 1px solid #444; }
+  a { color: #f3d38a; font-size: 1.2rem; }
+</style>
+<h2>Depth map maker (one-time tool, not part of the website)</h2>
+<input id="f" type="file" accept="image/*">
+<p id="s">Choose your garden image…</p>
+<a id="dl" download="garden_depth.png" hidden>Download garden_depth.png</a><br>
+<canvas id="c"></canvas>
+<script type="module">
+import { pipeline } from 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3';
+
+const s = document.getElementById('s'), c = document.getElementById('c'), dl = document.getElementById('dl');
+let depther;
+
+document.getElementById('f').onchange = async e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  try {
+    s.textContent = 'Loading AI model (first time downloads about 100 MB)…';
+    depther ??= await pipeline('depth-estimation', 'onnx-community/depth-anything-v2-small');
+    s.textContent = 'Estimating depth… (10–60 seconds)';
+    const { depth } = await depther(URL.createObjectURL(file));
+    const { width: w, height: h, channels: ch, data } = depth;
+
+    const tmp = document.createElement('canvas'); tmp.width = w; tmp.height = h;
+    const img = new ImageData(w, h);
+    for (let i = 0; i < w * h; i++) { const v = data[i * ch]; img.data.set([v, v, v, 255], i * 4); }
+    tmp.getContext('2d').putImageData(img, 0, 0);
+
+    const W = 1280, H = Math.round(W * h / w);          // web-friendly size, same aspect ratio
+    c.width = W; c.height = H;
+    const g = c.getContext('2d'); g.filter = 'blur(1.5px)'; g.drawImage(tmp, 0, 0, W, H);
+    c.toBlob(b => { dl.href = URL.createObjectURL(b); dl.hidden = false; s.textContent = 'Done. Download below.'; });
+  } catch (err) {
+    s.textContent = 'Error: ' + err.message + ' (use the Hugging Face fallback below)';
+    console.error(err);
+  }
+};
+</script>
