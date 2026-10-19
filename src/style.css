@@ -53,7 +53,7 @@ body.open #invite { display: block; }
 .kicker { font: 400 clamp(.85rem, 2.4vw, 1.1rem) 'Cinzel Decorative', serif; letter-spacing: .4em; text-transform: uppercase; color: var(--gold2); }
 
 /* ---- second screen: plain text on the background, with only a soft see-through glow behind (no card, no border) ---- */
-.hero { min-height: 100vh; min-height: 100dvh; display: grid; place-items: center; padding: calc(env(safe-area-inset-top) + 4dvh) 1rem 6dvh; }
+.hero { min-height: 70vh; min-height: 70dvh; display: grid; place-items: center; padding: calc(env(safe-area-inset-top) + 8dvh) 1rem 2dvh; }
 .hero-in { position: relative; isolation: isolate; width: min(94vw, 760px); padding: clamp(2.6rem, 9vw, 5rem) 1rem; text-align: center; opacity: 0; }
 .hero-in::before {
   content: ''; position: absolute; z-index: -1; inset: -14% -10%;
@@ -73,7 +73,7 @@ h1 span { color: var(--gold2); }
 .sep i { flex: none; width: 9px; height: 9px; background: var(--gold); transform: rotate(45deg); }
 
 /* sections + cards */
-.blk { max-width: 980px; margin: 0 auto; padding: 11vh 1rem; padding: 11dvh 1rem; display: grid; gap: 1.6rem; justify-items: center; }
+.blk { max-width: 980px; margin: 0 auto; padding: 6vh 1rem; padding: 6dvh 1rem; display: grid; gap: 1.6rem; justify-items: center; }
 .grid { width: 100%; display: grid; gap: 1.6rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); }
 .card {
   width: 100%; text-align: center; border-radius: 22px; line-height: 1.55; font-size: clamp(1.1rem, 2.6vw, 1.3rem);
@@ -91,19 +91,6 @@ h3 { font: 700 clamp(1.1rem, 3.4vw, 1.35rem) 'Cinzel Decorative', serif; color: 
 /* ---- two peacock feathers hanging from Krishna's flute ---- */
 .feathers { --fh: calc(min(100vw - 2rem, 560px) / 14); position: relative; width: min(100%, 560px); display: flex; padding-top: calc(var(--fh) * .25); }
 
-/* Full-bleed background block for the Celebrations section */
-.feathers::before {
-  content: '';
-  position: absolute;
-  z-index: -1;
-  width: 100vw;
-  left: 50%;
-  transform: translateX(-50%);
-  top: -180px; 
-  bottom: -120px; 
-  background: url('/assets/clean_bg.jpg') center/cover no-repeat;
-}
-
 .flute { position: absolute; left: 0; top: 0; width: 100%; height: var(--fh); overflow: visible; z-index: 0; pointer-events: none; filter: drop-shadow(0 8px 10px rgba(0, 0, 0, .5)); }
 .shine { animation: shine 7s ease-in-out infinite; }
 @keyframes shine { 0% { transform: translateX(0); } 55%, 100% { transform: translateX(720px); } }
@@ -113,13 +100,9 @@ h3 { font: 700 clamp(1.1rem, 3.4vw, 1.35rem) 'Cinzel Decorative', serif; color: 
   background: none; border: 0; cursor: pointer; color: inherit; font: inherit; -webkit-tap-highlight-color: transparent;
 }
 .fth:focus-visible { outline: none; }
-/* golden thread tied around the flute */
-.ring { position: relative; width: 2px; height: calc(var(--fh) * .5 + 26px); background: linear-gradient(var(--gold2), var(--gold)); }
-.ring::before {
-  content: ''; position: absolute; left: 50%; top: 0; width: 10px; height: calc(var(--fh) * .5); margin-left: -5px; border-radius: 2px;
-  background: repeating-linear-gradient(0deg, #8a6420 0 1.2px, #f3d38a 1.2px 3.2px); box-shadow: 0 2px 4px rgba(0, 0, 0, .5);
-}
-.swing { display: block; transform-origin: 50% 0; animation: sway 5.6s ease-in-out infinite; }
+
+/* CHANGED: Added margin-top to push the feather back down below the flute since the ring is gone */
+.swing { display: block; transform-origin: 50% 0; animation: sway 5.6s ease-in-out infinite; margin-top: calc(var(--fh) * .5 + 18px); }
 .fth:nth-child(2) .swing { animation-duration: 6.6s; animation-delay: -2.7s; }
 @keyframes sway { 0%, 100% { transform: rotate(-2.4deg); } 50% { transform: rotate(2.4deg); } }
 .pfs { display: block; width: clamp(120px, 30vw, 210px); aspect-ratio: 1 / 2; overflow: visible; filter: drop-shadow(0 14px 16px rgba(0, 0, 0, .5)); transition: filter .3s; }
@@ -204,20 +187,14 @@ h3 { font: 700 clamp(1.1rem, 3.4vw, 1.35rem) 'Cinzel Decorative', serif; color: 
     padding: 1rem 1rem;
     font-size: 1rem;
   }
-  .feathers::before {
-    top: -100px;
-    bottom: -80px;
-  }
   
-  /* Shrink the popup overlay panel specifically on mobile so the peacock feathers show */
   .panel {
-    width: 72vw; /* Shrunk from 82vw to 72vw */
+    width: 72vw; 
     max-height: 55vh;
     padding: 1.5rem 0.8rem 1.2rem;
-    border-radius: 100px 100px 20px 20px; /* Gentler curve allows top feathers to show */
+    border-radius: 100px 100px 20px 20px; 
   }
   
-  /* Scale down the typography inside the popup */
   .panel h2 {
     font-size: 1.2rem;
   }

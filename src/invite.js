@@ -67,7 +67,6 @@ export function renderInvite() {
       <div class="feathers reveal">
         ${c.ceremonies.map((x, i) => `
           <button class="fth" type="button" data-i="${i}" aria-haspopup="dialog" aria-label="Open ${x.label} details">
-            <span class="ring"></span>
             <span class="swing">${featherSvg('pfs')}</span>
             <span class="cap"><b>${x.label}</b><small>Click here${click}</small></span>
           </button>`).join('')}
@@ -133,7 +132,6 @@ export function renderInvite() {
     ov.hidden = false; document.documentElement.classList.add('modal');
     fanwrap.style.top = oy * 100 + '%';
     
-    // CHANGED HERE: We allow the fan to grow to 95% of the screen width on phones so it extends past the panel
     const L = Math.min(innerHeight * oy - 24, portrait ? innerWidth * 0.95 : innerWidth * 0.62, 620);
     
     fan.forEach(f => {
@@ -153,7 +151,7 @@ export function renderInvite() {
         { clipPath: 'inset(-40px -60px -60px -60px)', y: 0, duration: 1.1, ease: 'power3.out' }, .75)
       .fromTo([xBtn, ...panel.querySelectorAll('.kicker, h2, .sep, .evi')],
         { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: .6, stagger: .1, ease: 'power2.out' }, 1.15);
-    stopSway();   // once the tail is open, every feather breathes gently, each on its own rhythm
+    stopSway();   // once the tail is open, every feather breathes gently, each on its rhythm
     sway = gsap.to(fanwrap.querySelectorAll('svg'), { rotation: k => (k % 2 ? 1 : -1) * (1.2 + (k % 4) * .4), duration: k => 2.4 + (k % 5) * .35,
       ease: 'sine.inOut', repeat: -1, yoyo: true, delay: 1.5, transformOrigin: '50% 0%' });
     gsap.delayedCall(1.3, () => { if (!ov.hidden) xBtn.focus({ preventScroll: true }); });

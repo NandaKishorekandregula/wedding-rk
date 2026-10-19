@@ -55,7 +55,8 @@ async function init() {
   const [texImg, texDepth, texPage] = await Promise.all([
     loader.loadAsync(gardenFile).catch(() => { throw new Error('Cannot load ' + gardenFile + '. Check the file is in public/assets/.'); }),
     loader.loadAsync(depthFile).catch(() => { show('Note: ' + depthFile + ' not found, so the garden is flat.'); return flat(); }),
-    loader.loadAsync('/assets/page_bg.webp').catch(() => { show('Note: public/assets/page_bg.webp not found, using a plain teal background.'); return pageFallback(); }),
+    // Replaced the old background with the clean one across the entire page
+    loader.loadAsync('/assets/clean_bg.jpg').catch(() => { show('Note: public/assets/clean_bg.jpg not found, using a plain teal background.'); return pageFallback(); }),
   ]);
   texDepth.generateMipmaps = false; texDepth.minFilter = THREE.LinearFilter;
 
