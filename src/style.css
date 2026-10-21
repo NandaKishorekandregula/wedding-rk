@@ -1,7 +1,7 @@
 :root { --ivory: #f6efdc; --gold: #d9a93f; --gold2: #f3d38a; --panel: rgba(6, 26, 40, .64); --line: rgba(243, 211, 138, .55); }
 * { margin: 0; box-sizing: border-box; }
 
-/* Strictly prevent sideways sliding on mobile */
+/* Strictly prevent sideways sliding and horizontal bounce on mobile */
 html, body {
   width: 100%;
   max-width: 100vw;
@@ -33,7 +33,7 @@ body { font-family: 'Cormorant Garamond', serif; color: var(--ivory); }
 }
 #intro .names span { color: #f6d57a; }
 
-/* ---- Floating Magic Animation Layer (Contained to prevent horizontal spill) ---- */
+/* ---- Floating Magic Animation Layer (Small Lotus & Feathers) ---- */
 #magic-layer {
   position: fixed;
   top: 0;
@@ -92,7 +92,7 @@ body.open #invite { display: block; }
 
 /* ---- second screen ---- */
 .hero { min-height: 100vh; min-height: 100dvh; display: grid; place-items: center; padding: calc(env(safe-area-inset-top) + 4dvh) 1rem 6dvh; width: 100%; }
-.hero-in { position: relative; isolation: isolate; width: min(94vw, 760px); padding: clamp(2.6rem, 9vw, 5rem) 1rem; text-align: center; opacity: 0; }
+.hero-in { position: relative; isolation: isolate; width: min(98vw, 1200px); padding: clamp(2.6rem, 9vw, 5rem) 0.5rem; text-align: center; opacity: 0; }
 .hero-in::before {
   content: ''; position: absolute; z-index: -1; inset: -14% 0;
   background: radial-gradient(closest-side, rgba(4, 20, 30, .66), rgba(4, 20, 30, .34) 60%, transparent);
@@ -100,7 +100,15 @@ body.open #invite { display: block; }
 .hero-in > * { opacity: 0; }
 .hero-in .sep { margin: 1.2rem auto; }
 .line { margin-top: .6rem; font-style: italic; font-size: clamp(1.1rem, 2.8vw, 1.4rem); color: var(--ivory); text-shadow: 0 2px 14px rgba(0, 0, 0, .6); }
-h1 { font: 700 clamp(2.1rem, 8vw, 4rem) / 1.12 'Cinzel Decorative', serif; color: var(--ivory); text-shadow: 0 2px 4px rgba(0, 0, 0, .4), 0 4px 24px rgba(0, 0, 0, .55); }
+
+/* Couple names heading */
+h1 {
+  font: 700 clamp(1.8rem, 6.2vw, 5.2rem) / 1.15 'Cinzel Decorative', serif;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+  color: var(--ivory);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, .4), 0 4px 24px rgba(0, 0, 0, .55);
+}
 h1 span { color: var(--gold2); }
 .date { margin-top: .9rem; font-weight: 600; font-size: clamp(1.15rem, 3vw, 1.6rem); letter-spacing: .12em; color: var(--gold2); text-shadow: 0 2px 14px rgba(0, 0, 0, .6); }
 
@@ -155,29 +163,206 @@ h3 { font: 700 clamp(1.1rem, 3.4vw, 1.35rem) 'Cinzel Decorative', serif; color: 
 .cap svg { width: 20px; height: 20px; }
 @keyframes nudge { 50% { opacity: .55; transform: translateY(3px); } }
 
+/* ---- Pre-Wedding Gallery Styling ---- */
+.gallery-section {
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.gallery-wrapper {
+  position: relative;
+  width: min(90vw, 540px);
+  margin-top: 1rem;
+}
+
+.gallery-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  max-height: 65vh;
+  border-radius: 160px 160px 24px 24px;
+  border: 2px solid var(--gold);
+  box-shadow: 0 0 0 5px rgba(243, 211, 138, 0.15), 0 20px 50px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+  background: rgba(6, 26, 40, 0.6);
+}
+
+.gallery-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  pointer-events: none;
+}
+
+.gallery-slide.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.gallery-slide img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.gallery-slide::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(6,22,31,0.2) 0%, transparent 40%, rgba(6,22,31,0.85) 100%);
+  pointer-events: none;
+}
+
+.g-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(6, 26, 40, 0.75);
+  border: 1px solid var(--line);
+  color: var(--gold2);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.g-btn:hover {
+  background: rgba(255, 200, 100, 0.25);
+  transform: translateY(-50%) scale(1.08);
+}
+
+.g-btn.prev { left: -16px; }
+.g-btn.next { right: -16px; }
+
+.g-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 1rem;
+}
+
+.g-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(243, 211, 138, 0.3);
+  cursor: pointer;
+  transition: transform 0.3s, background 0.3s;
+}
+
+.g-dot.active {
+  background: var(--gold2);
+  transform: scale(1.3);
+}
+
 /* ---- details overlay: peacock tail fan + rising panel ---- */
 #ov { position: fixed; inset: 0; z-index: 8; overflow: hidden; width: 100vw; max-width: 100%; }
 #ov[hidden] { display: none; }
-.ov-bg { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 60%, rgba(8, 48, 64, .9), rgba(2, 12, 20, .95)); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
-.fanwrap { position: absolute; left: 50%; top: 50%; width: 0; height: 0; }
+
+/* Deep Solid Radial Backdrop */
+.ov-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 60%, rgba(4, 22, 33, 0.98), rgba(2, 10, 16, 0.99));
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+/* Base Canvases placed BEHIND the fan, card, and flute */
+#haldi-canvas, #sangeet-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1; /* Deep background: behind text AND behind peacock feathers */
+}
+
+/* Peacock Fan Layer */
+.fanwrap { position: absolute; left: 50%; top: 50%; width: 0; height: 0; z-index: 2; }
 .fi { position: absolute; left: 0; bottom: 0; will-change: transform, opacity; }
 .fi i { display: block; width: 100%; height: 100%; transform: scaleY(-1); }
 .fi.m i { transform: scale(-1, -1); }
 .fi svg { display: block; width: 100%; height: 100%; overflow: visible; }
 .fi.back i { opacity: .82; }
+
+/* ---- Sangeet Bottom Centered Horizontal Flute ---- */
+.sangeet-wrap {
+  position: absolute;
+  bottom: 8%; /* Centers inside the bottom empty space */
+  left: 50%;
+  transform: translateX(-50%);
+  width: clamp(280px, 50vw, 450px);
+  z-index: 3; /* In front of notes (z:1) and feathers (z:2) */
+  pointer-events: none;
+}
+.sangeet-sway {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+/* Two strings suspending the flute */
+.sangeet-strings {
+  position: absolute;
+  bottom: 100%;
+  left: 15%; /* Spaced out attachment points */
+  width: 70%;
+  display: flex;
+  justify-content: space-between;
+  height: 100vh;
+}
+.sangeet-string {
+  width: 1.5px;
+  height: 100%;
+  background: linear-gradient(to top, rgba(243, 211, 138, 0.6), transparent 25%);
+}
+.sangeet-flute-box {
+  width: 100%;
+  display: block;
+}
+.sangeet-flute-box svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 15px 25px rgba(0,0,0,0.6)) drop-shadow(0 0 15px rgba(243, 211, 138, 0.35));
+}
+
+/* Text Card Layer */
+.pwrap { 
+  position: absolute; inset: 0; display: grid; place-items: center; padding: 1rem; width: 100%; max-width: 100vw; overflow: hidden; 
+  z-index: 4; /* Highest layer, protecting text legibility */
+}
+
+/* Close Button */
 .x {
-  position: absolute; z-index: 2; top: calc(env(safe-area-inset-top) + 14px); right: calc(env(safe-area-inset-right) + 14px);
+  position: absolute; z-index: 5; top: calc(env(safe-area-inset-top) + 14px); right: calc(env(safe-area-inset-right) + 14px);
   width: 46px; height: 46px; display: grid; place-items: center; cursor: pointer; border-radius: 50%; font-size: 1.1rem;
   color: var(--gold2); background: rgba(6, 26, 40, .7); border: 1px solid var(--line);
 }
 .x:hover, .x:focus-visible { background: rgba(255, 200, 100, .25); outline: none; }
-.pwrap { position: absolute; inset: 0; display: grid; place-items: center; padding: 1rem; width: 100%; max-width: 100vw; overflow: hidden; }
 
 /* Panel: Balanced padding and arch styling */
 .panel {
   position: relative; width: min(88vw, 460px); max-height: 72vh; overflow-y: auto; text-align: center;
   padding: 2.2rem clamp(1rem, 4vw, 2rem) 1.6rem; border-radius: 140px 140px 22px 22px;
-  background: rgba(6, 26, 40, .85); border: 2px solid var(--gold);
+  background: rgba(6, 26, 40, .88); border: 2px solid var(--gold);
   box-shadow: 0 0 0 5px rgba(243, 211, 138, .14), 0 30px 80px rgba(0, 0, 0, .6);
   -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
 }
@@ -244,5 +429,11 @@ h3 { font: 700 clamp(1.1rem, 3.4vw, 1.35rem) 'Cinzel Decorative', serif; color: 
   }
   .kicker {
     font-size: 0.7rem;
+  }
+  .g-btn.prev { left: -8px; }
+  .g-btn.next { right: -8px; }
+
+  .sangeet-wrap {
+    bottom: 4%;
   }
 }
