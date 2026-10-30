@@ -29,7 +29,7 @@ export const config = {
           name: "Reception",
           date: "20 Nov 2027",
           time: "4:00 PM",
-          venue: "Family Residence"
+          venue: "Vakkalagadda Ramamohan Rao Venkata Rathnamma A/c Kalyana Mandapam"
         }
       ]
     },
