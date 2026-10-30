@@ -1,49 +1,47 @@
 export const config = {
   groom: {
-    name: "Aarav",
+    name: "Surya",
     about: "A gentle soul who finds peace in music and prayer.",
-    parents: "S/o Smt. Lakshmi & Sri Rajesh Sharma"
+    parents: "S/o Smt. Umadevi & Sri Sateesh"
   },
   bride: {
-    name: "Ananya",
+    name: "Swathi",
     about: "Graceful, joyful and devoted to family and tradition.",
-    parents: "D/o Smt. Sunita & Sri Suresh Varma"
+    parents: "D/o Smt. Venkata Lakshmi Kumari & Nageswarao rao"
   },
   introBlessing: "|| श्री गणेशाय नमः ||",
   heroBlessing: "With the divine blessings of our beloved elders and the grace of Shri Radha Krishna",
   blessing: "ॐ श्री राधाकृष्णाभ्यां नमः",
   message: "Together with their families, Aarav & Ananya invite you to share in the joy and sacred traditions of their wedding celebrations.",
-  date: "Friday, 12 February 2027",
+  date: "Wednesday, 18 November 2027",
   ceremonies: [
     {
-      label: "Haldi & Mehendi",
-      title: "Haldi & Mehendi",
+      label: "Wedding & Reception",
+      title: "Wedding & Reception",
       events: [
         {
-          name: "Haldi",
-          date: "10 Feb 2027",
-          time: "10:00 AM",
-          venue: "Family Residence",
-          note: "Wear yellow, and come ready to play!"
+          name: "Wedding",
+          date: "18 Nov 2027",
+          time: "9:11 PM",
+          venue: "Vakkalagadda Ramamohan Rao Venkata Rathnamma A/c Kalyana Mandapam",
         },
         {
-          name: "Mehendi",
-          date: "10 Feb 2027",
+          name: "Reception",
+          date: "20 Nov 2027",
           time: "4:00 PM",
           venue: "Family Residence"
         }
       ]
     },
     {
-      label: "Sangeet Night",
-      title: "Sangeet Night",
+      label: "Satyanarayana swami vratam",
+      title: "Satyanasrayana swami vratam",
       events: [
         {
-          name: "Sangeet",
-          date: "11 Feb 2027",
-          time: "7:00 PM",
-          venue: "Your Venue Name",
-          note: "An evening of music and dance"
+          name: "Satyanarayana swami vratam",
+          date: "20 Nov 2027",
+          time: "7:00 AM",
+          venue: "Tenali vasavi kanyakaparameswari devastanam",
         }
       ]
     }
@@ -51,25 +49,27 @@ export const config = {
   gallery: [
     { src: '/assets/prewedding_1.jpg' },
     { src: '/assets/prewedding_2.jpg' },
-    { src: '/assets/prewedding_3.jpg' }
+    { src: '/assets/prewedding_3.jpg' },
+    { src: '/assets/prewedding_4.jpg' },
+    { src: '/assets/prewedding_5.jpg' },
   ],
   mainEvents: [
     {
       name: "Wedding",
-      date: "12 Feb 2027",
-      time: "10:30 AM"
+      date: "18 Nov 2027",
+      time: "9:11 PM"
     },
     {
       name: "Reception",
-      date: "12 Feb 2027",
+      date: "20 Nov 2027",
       time: "7:00 PM"
     }
   ],
   venue: {
-    name: "The Royal Palace Grounds",
-    address: "Palace Road, Near Heritage Garden, City",
-    mapUrl: "https://maps.google.com"
+    name: "Vakkalagadda Ramamohan Rao Venkata Rathnamma A/c Kalyana Mandapam",
+    address: "Vakkalagadda Ramamohan Rao Venkata Rathnamma A/c Kalyana Mandapam, Tenali",
+    mapUrl: "https://maps.app.goo.gl/YGAn8EdJdbjbJx4a6"
   },
-  families: "Sharma & Varma Families",
+  families: "Vuppala & Tata Families",
   music: "/assets/music.mp3"
 };
