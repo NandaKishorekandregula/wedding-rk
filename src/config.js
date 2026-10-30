@@ -50,8 +50,7 @@ export const config = {
     { src: '/assets/prewedding_1.jpg' },
     { src: '/assets/prewedding_2.jpg' },
     { src: '/assets/prewedding_3.jpg' },
-    { src: '/assets/prewedding_4.jpg' },
-    { src: '/assets/prewedding_5.jpg' },
+    { src: '/assets/prewedding_4.jpg' }
   ],
   mainEvents: [
     {
